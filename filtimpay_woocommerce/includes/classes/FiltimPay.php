@@ -34,8 +34,8 @@ class LiqPay
     const CURRENCY_RUB = 'RUB';
     const CURRENCY_RUR = 'RUR';
 
-    private $_api_url = 'https://filtimpay.com/api/log/log.php';
-    private $_checkout_url = 'https://filtimpay.com/api/log/checkout.php';
+    private $_api_url = 'https://filtimpay.com/api/';
+    private $_checkout_url = 'https://filtimpay.com/api/';
     protected $_supportedCurrencies = array(
         self::CURRENCY_EUR,
         self::CURRENCY_USD,
