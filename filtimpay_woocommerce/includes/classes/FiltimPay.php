@@ -26,7 +26,7 @@
  *
  * @author      FiltimPay <support@FiltimPay.com>
  */
-class LiqPay
+class FilPay
 {
     const CURRENCY_EUR = 'EUR';
     const CURRENCY_USD = 'USD';
@@ -34,8 +34,8 @@ class LiqPay
     const CURRENCY_RUB = 'RUB';
     const CURRENCY_RUR = 'RUR';
 
-    private $_api_url = 'https://filtimpay.com/api/log/log.php';
-    private $_checkout_url = 'https://filtimpay.com/api/log/checkout.php';
+    private $_api_url = 'https://filtimpay.com/api/';
+    private $_checkout_url = 'https://filtimpay.com/api/';
     protected $_supportedCurrencies = array(
         self::CURRENCY_EUR,
         self::CURRENCY_USD,
@@ -104,7 +104,7 @@ class LiqPay
         $data      = $this->encode_params($params);
         $signature = $this->cnb_signature($params);
 
-        return $this->_checkout_url . '?' . build_query(array('data' => $data, 'signature' => $signature));
+        return $this->_checkout_url . '?' . build_query(array('data' => $data, 'sign' => $signature));
     }
     
     /**
@@ -136,9 +136,10 @@ class LiqPay
         $params      = $this->cnb_params($params);
         $token = $this->_token;
 
-        $json      = $this->encode_params($params);
-        $signature = $this->str_to_sign($token . $json . $token);
-
+        $base      = $this->encode_params($params);
+        $signature = md5(json_encode($params).$token);
+        //$signature = $token;
+        
         return $signature;
     }
 
@@ -153,22 +154,19 @@ class LiqPay
     {
         $params['project_id'] = $this->_project_id;
 
-        if (!isset($params['version'])) {
-            throw new InvalidArgumentException('version is null');
-        }
-        if (!isset($params['amount'])) {
+        if (!isset($params['payment_amount'])) {
             throw new InvalidArgumentException('amount is null');
         }
-        if (!isset($params['currency'])) {
+        if (!isset($params['payment_currency'])) {
             throw new InvalidArgumentException('currency is null');
         }
-        if (!in_array($params['currency'], $this->_supportedCurrencies)) {
+        if (!in_array($params['payment_currency'], $this->_supportedCurrencies)) {
             throw new InvalidArgumentException('currency is not supported');
         }
-        if ($params['currency'] == self::CURRENCY_RUR) {
-            $params['currency'] = self::CURRENCY_RUB;
+        if ($params['payment_currency'] == self::CURRENCY_RUR) {
+            $params['payment_currency'] = self::CURRENCY_RUB;
         }
-        if (!isset($params['description'])) {
+        if (!isset($params['payment_desrciption'])) {
             throw new InvalidArgumentException('description is null');
         }
 

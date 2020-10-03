@@ -45,7 +45,7 @@ class WC_Gateway_FiltimPay extends WC_Payment_Gateway
      */
     protected function setup_properties()
     {
-        $this->id = 'liqpay-webplus';
+        $this->id = 'filtimpay';
         $this->icon = apply_filters('woocommerce_cod_icon', '');
         $this->method_title = 'FiltimPay';
         $this->method_description = 'Payment service that allows you to make instant payments on the Internet and payment cards Visa, MasterCard all over the world.';
@@ -130,7 +130,7 @@ class WC_Gateway_FiltimPay extends WC_Payment_Gateway
                 'title' => __('About plugin', 'woocommerce'),
                 'type' => 'title',
                 /* translators: %s: URL */
-                'description' => sprintf(__('В этой версии плагина покупатели смогут только оплачивать товары из корзины вашего интернет магазина выбрав способ оплаты LiqPay.<br />Но в этой версии нет callback на ваш сайт после оплаты. Сallback – это обращения к вашему сайту по API с сервиса liqpay для уведомления Вас, что деньги поступили на счет и тем самым изменяет статус в ваших заказах в админ панели на “Обработка”.<br />Более полную версию плагина с callback вы можете заказать, обратившись по эмейлу указанному на <a href="%s">странице плагина</a>.<hr /> Рекоммендуем вам еще один мой плагин <a href="%s">WebPlus-Gallery</a> - это галерея слайдер. Очень красивая и удобная.', 'woocommerce'), 'https://wordpress.org/plugins/webplus-liqpay-woocommerce/', 'https://wordpress.org/plugins/webplus-gallery/'),
+                'description' => sprintf(__('В этой версии плагина покупатели смогут только оплачивать товары из корзины вашего интернет магазина выбрав способ оплаты FiltimPay.<br />Но в этой версии нет callback на ваш сайт после оплаты. Сallback – это обращения к вашему сайту по API с сервиса FiltimPay для уведомления Вас, что деньги поступили на счет и тем самым изменяет статус в ваших заказах в админ панели на “Обработка”.<br />Более полную версию плагина с callback вы можете заказать, обратившись по эмейлу указанному на <a href="%s">странице плагина</a>.<hr /> Рекоммендуем вам еще один мой плагин <a href="%s">WebPlus-Gallery</a> - это галерея слайдер. Очень красивая и удобная.', 'woocommerce'), 'https://filtimpay.com', 'https://wordpress.org/plugins/filtimpay/'),
             ),
         );
     }
@@ -180,8 +180,8 @@ class WC_Gateway_FiltimPay extends WC_Payment_Gateway
         WC()->cart->empty_cart();
 
         require_once(__DIR__ . '/classes/FiltimPay.php');
-        $LigPay = new LiqPay($this->get_option('project_id'), $this->get_option('token'));
-        $url = $LigPay->cnb_link(array(
+        $FilPay = new FilPay($this->get_option('project_id'), $this->get_option('token'));
+        $url = $FilPay->cnb_link(array(
             //'sandbox'=>'1' // и куда же без песочницы,
           
             "project_id" 	=> $this->get_option('project_id'),
